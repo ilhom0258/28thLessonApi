@@ -34,7 +34,7 @@ namespace WEBAPI.Controllers
             var quote = await _db.Quotes.FirstOrDefaultAsync(q => q.Id == id);
             if (quote == null)
             {
-                return NotFound();
+                return NotFound("Quote with such id not found");
             }
             return quote;
         }
@@ -50,9 +50,9 @@ namespace WEBAPI.Controllers
             _db.Quotes.Add(quote);
             if (await _db.SaveChangesAsync() > 0)
             {
-                return Ok();
+                return Ok("Inserted");
             }
-            return BadRequest();
+            return BadRequest("Error while saving to database");
         }
 
         [HttpPut]
@@ -64,7 +64,7 @@ namespace WEBAPI.Controllers
             var tempQuote = await _db.Quotes.FindAsync(id);
             if ( tempQuote == null)
             {
-                return BadRequest();
+                return NotFound("Quote with such id not found");
             }
             tempQuote.Author = quote.Author ?? tempQuote.Author;
             tempQuote.Text = quote.Text ?? tempQuote.Text;
@@ -72,9 +72,9 @@ namespace WEBAPI.Controllers
 
             if (await _db.SaveChangesAsync() > 0)
             {
-                return Ok();
+                return Ok("Updated");
             }
-            return BadRequest();
+            return BadRequest("Error while saving to database");
         }
 
         [HttpDelete("{id}")]
@@ -83,14 +83,14 @@ namespace WEBAPI.Controllers
             var quote = await _db.Quotes.FindAsync(id);
             if (quote == null)
             {
-                return NotFound();
+                return NotFound("Quote with such id not found");
             }
             _db.Remove(quote);
             if (await _db.SaveChangesAsync() > 0)
             {
-                return Ok();
+                return Ok($"Quote with id = {id} deleted");
             }
-            return BadRequest();
+            return BadRequest("Error while saving to database");
         }
 
         [NonAction]
