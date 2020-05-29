@@ -10,13 +10,14 @@ namespace WEBAPI.Models
     {
         [Required]
         public int Id { get; set; }
-        
+
         [Required(ErrorMessage = "Текст обязателен")]
         public string Text { get; set; }
 
         public string Author { get; set; }
 
         [Required]
+        [Timestamp]
         public DateTime InsertDate { get; set; }
 
     }
