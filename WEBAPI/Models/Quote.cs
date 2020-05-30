@@ -8,7 +8,6 @@ namespace WEBAPI.Models
 {
     public class Quote
     {
-        [Required]
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Текст обязателен")]
@@ -16,8 +15,7 @@ namespace WEBAPI.Models
 
         public string Author { get; set; }
 
-        [Required]
-        [Timestamp]
+        [Required(ErrorMessage ="Дата должна присуствовать")]
         public DateTime InsertDate { get; set; }
 
     }

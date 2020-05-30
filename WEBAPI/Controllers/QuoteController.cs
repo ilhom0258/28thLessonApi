@@ -30,7 +30,7 @@ namespace WEBAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Quote>> Get(int id)
         {
-            QuoteTimeChecker(); 
+            await QuoteTimeChecker(); 
             var quote = await _db.Quotes.FirstOrDefaultAsync(q => q.Id == id);
             if (quote == null)
             {
@@ -42,6 +42,8 @@ namespace WEBAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Quote>> Post(Quote quote)
         {
+            await QuoteTimeChecker(); 
+            quote.InsertDate = DateTime.Now; 
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
@@ -55,12 +57,10 @@ namespace WEBAPI.Controllers
             return BadRequest("Error while saving to database");
         }
 
-        [HttpPut]
-        public async Task<ActionResult<Quote>> Put(Quote quote)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Quote>> Put(int id, Quote quote)
         {
-
-            int id = quote.Id; 
-
+            await QuoteTimeChecker(); 
             var tempQuote = await _db.Quotes.FindAsync(id);
             if ( tempQuote == null)
             {
